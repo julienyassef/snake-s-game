@@ -9,6 +9,7 @@ import AnimatedSnake from './components/AnimatedSnake/AnimatedSnake';
 import ModalGameOver from './components/ModalGameOver/ModalGameOver';
 import ScoreBoard from './components/ScoreBoard/ScoreBoard';
 import NameValidationModal from './components/NameValidationModal/NameValidationModal'; 
+import ModeDisplay from './components/ModeDisplay/ModeDisplay';
 
 interface SnakePart {
   x: number;
@@ -18,6 +19,8 @@ interface SnakePart {
 const App: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
   const [showNameValidationModal, setShowNameValidationModal] = useState(false);
+  const [mode, setMode] = useState('lent'); // Initialisation à "lent"
+
   
   const [snake, setSnake] = useState<SnakePart[]>([
     { x: 140, y: 150 },
@@ -34,7 +37,7 @@ const App: React.FC = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showScoreBoard, setShowScoreBoard] = useState(false); // État pour afficher le tableau des scores
-  const [speed, setSpeed] = useState(100); // Vitesse par défaut
+  const [speed, setSpeed] = useState(150); // Vitesse par défaut
   const [animateSnakes, setAnimateSnakes] = useState(true); // Pour contrôler l'animation des serpents
 
   const startGame = () => {
@@ -65,10 +68,27 @@ const App: React.FC = () => {
   };
 
   const selectLevel = (level: number) => {
-    if (level === 1) setSpeed(150);
-    if (level === 2) setSpeed(100);
-    if (level === 3) setSpeed(50);
+    let selectedMode = 'moyen';
+    if (level === 1) {
+      setSpeed(150);
+      selectedMode = 'lent';
+    }
+    if (level === 2) {
+      setSpeed(100);
+      selectedMode = 'moyen';
+    }
+    if (level === 3) {
+      setSpeed(50);
+      selectedMode = 'rapide';
+    }
+    setMode(selectedMode); 
     setShowModal(false);
+  };
+
+  const speedToMode = (speed: number): string => {
+    if (speed === 150) return 'lent';
+    if (speed === 100) return 'moyen';
+    return 'rapide';
   };
 
   const randomPosition = () => {
@@ -92,11 +112,7 @@ const App: React.FC = () => {
     setShowModal(true);
   };
 
-  const speedToMode = (speed: number): string => {
-    if (speed === 150) return 'lent';
-    if (speed === 100) return 'moyen';
-    return 'rapide';
-  };
+  
 
   const handleSnakeMove = (newSnake: SnakePart[]) => {
     setSnake(newSnake);
@@ -118,14 +134,6 @@ const App: React.FC = () => {
     setVx(newVx);
     setVy(newVy);
   }, []);
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value;
-    if (newName.length <= 12) {
-      setPlayerName(newName);
-    }
-  };
-  
 
   const length1 = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
   const length2 = Math.floor(Math.random() * (12 - 6 + 1)) + 6;
@@ -161,6 +169,7 @@ const App: React.FC = () => {
         </div>
       ) : (
         <>
+          <Score score={score} />
           <GameBoard
             snake={snake}
             pommeX={pommeX}
@@ -176,7 +185,8 @@ const App: React.FC = () => {
           />
           <div className="flex items-center justify-between w-[300px] px-4">
             <PlayerName playerName={playerName} />
-            <Score score={score} />
+            <ModeDisplay mode={mode}/>
+            
           </div>
         </>
       )}
