@@ -6,7 +6,7 @@ interface LevelSelectorProps {
 
 const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel }) => {
   return (
-    <div className="mt-6">
+    <div className="mt-4 mb-4">
       <label 
         htmlFor="level" 
         className="block mb-2 text-lg font-medium text-[#95C695]" // Utilisation de la couleur #95C695

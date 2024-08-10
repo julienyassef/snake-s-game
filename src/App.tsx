@@ -15,6 +15,8 @@ interface SnakePart {
 }
 
 const App: React.FC = () => {
+  const [playerName, setPlayerName] = useState('');
+  
   const [snake, setSnake] = useState<SnakePart[]>([
     { x: 140, y: 150 },
     { x: 130, y: 150 },
@@ -34,6 +36,10 @@ const App: React.FC = () => {
   const [animateSnakes, setAnimateSnakes] = useState(true); // Pour contrôler l'animation des serpents
 
   const startGame = () => {
+    if (playerName.trim() === '') {
+      alert("Veuillez entrer un nom pour le classement.");
+      return;
+    }
     const canvasSize = 300;
     const initialX = canvasSize / 2;
     const initialY = canvasSize / 2;
@@ -133,6 +139,13 @@ const App: React.FC = () => {
       <h1 className="text-4xl font-bold mb-6 z-10">Snake Game</h1>
       {!isGameStarted ? (
         <div className="flex flex-col items-center z-10">
+           <input
+            type="text"
+            placeholder="Entrez votre nom"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            className="mb-4 p-2 border border-gray-300 rounded text-[#95C695] focus:outline-none focus:ring-2 focus:ring-[#95C695]"
+          />
           <LevelSelector onSelectLevel={selectLevel} />
           <StartButton onStart={startGame} />
         </div>
