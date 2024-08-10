@@ -19,7 +19,7 @@ interface SnakePart {
 const App: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
   const [showNameValidationModal, setShowNameValidationModal] = useState(false);
-  const [mode, setMode] = useState('lent'); // Initialisation à "lent"
+  const [mode, setMode] = useState('lent'); 
 
   
   const [snake, setSnake] = useState<SnakePart[]>([
@@ -68,7 +68,7 @@ const App: React.FC = () => {
   };
 
   const selectLevel = (level: number) => {
-    let selectedMode = 'moyen';
+    let selectedMode = 'lent';
     if (level === 1) {
       setSpeed(150);
       selectedMode = 'lent';
@@ -108,11 +108,10 @@ const App: React.FC = () => {
 
   const handleGameOver = () => {
     setStopGame(true);
-    saveScore('Player1', score, speedToMode(speed));
+    saveScore(playerName, score, speedToMode(speed));
     setShowModal(true);
   };
 
-  
 
   const handleSnakeMove = (newSnake: SnakePart[]) => {
     setSnake(newSnake);
@@ -148,11 +147,12 @@ const App: React.FC = () => {
       </div>
 
       <button
-        className="absolute top-4 left-4 flex items-center text-[#95C695] font-bold py-2 px-4 z-10 bg-transparent transition-transform transform hover:scale-105 hover:text-[#6BA76B]"
+        className="absolute bottom-4 left-4 flex items-center text-yellow-500 font-bold py-2 px-4 z-10 bg-transparent transition-transform transform hover:scale-110 hover:text-white hover:bg-yellow-500 hover:shadow-lg"
         onClick={() => setShowScoreBoard(true)}
       >
         Voir le Classement
       </button>
+
 
       <h1 className="text-4xl font-bold mb-6 z-10">Snake Game</h1>
       {!isGameStarted ? (
@@ -186,7 +186,6 @@ const App: React.FC = () => {
           <div className="flex items-center justify-between w-[300px] px-4">
             <PlayerName playerName={playerName} />
             <ModeDisplay mode={mode}/>
-            
           </div>
         </>
       )}
