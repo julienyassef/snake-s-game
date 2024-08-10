@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-
 import { saveScore } from './utils/LocalStorage';
 import GameBoard from './components/GameBoard/GameBoard';
 import Score from './components/Score/Score';
+import PlayerName from './components/PlayerName/PlayerName';
 import StartButton from './components/StartButton/StartButton';
 import LevelSelector from './components/LevelSelector/LevelSelector';
 import AnimatedSnake from './components/AnimatedSnake/AnimatedSnake';
 import ModalGameOver from './components/ModalGameOver/ModalGameOver';
 import ScoreBoard from './components/ScoreBoard/ScoreBoard';
+import NameValidationModal from './components/NameValidationModal/NameValidationModal'; 
 
 interface SnakePart {
   x: number;
@@ -16,6 +17,7 @@ interface SnakePart {
 
 const App: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
+  const [showNameValidationModal, setShowNameValidationModal] = useState(false);
   
   const [snake, setSnake] = useState<SnakePart[]>([
     { x: 140, y: 150 },
@@ -36,10 +38,11 @@ const App: React.FC = () => {
   const [animateSnakes, setAnimateSnakes] = useState(true); // Pour contrôler l'animation des serpents
 
   const startGame = () => {
-    if (playerName.trim() === '') {
-      alert("Veuillez entrer un nom pour le classement.");
+    if (playerName.trim().length < 3 || playerName.trim().length > 12) {
+      setShowNameValidationModal(true);
       return;
-    }
+    }  
+
     const canvasSize = 300;
     const initialX = canvasSize / 2;
     const initialY = canvasSize / 2;
@@ -116,6 +119,14 @@ const App: React.FC = () => {
     setVy(newVy);
   }, []);
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value;
+    if (newName.length <= 12) {
+      setPlayerName(newName);
+    }
+  };
+  
+
   const length1 = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
   const length2 = Math.floor(Math.random() * (12 - 6 + 1)) + 6;
   const length3 = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
@@ -128,7 +139,6 @@ const App: React.FC = () => {
         <AnimatedSnake initialLength={length3} animate={animateSnakes} />
       </div>
 
-      {/* Bouton Voir le Classement */}
       <button
         className="absolute top-4 left-4 flex items-center text-[#95C695] font-bold py-2 px-4 z-10 bg-transparent transition-transform transform hover:scale-105 hover:text-[#6BA76B]"
         onClick={() => setShowScoreBoard(true)}
@@ -164,8 +174,15 @@ const App: React.FC = () => {
             onDirectionChange={handleDirectionChange}
             speed={speed}
           />
-          <Score score={score} />
+          <div className="flex items-center justify-between w-[300px] px-4">
+            <PlayerName playerName={playerName} />
+            <Score score={score} />
+          </div>
         </>
+      )}
+
+      {showNameValidationModal && (
+        <NameValidationModal onClose={() => setShowNameValidationModal(false)} />
       )}
 
       {showScoreBoard && (
