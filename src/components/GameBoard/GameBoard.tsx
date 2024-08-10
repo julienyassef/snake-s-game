@@ -123,9 +123,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
     // Intervalle pour rafraîchir le canvas toutes les 100ms
     const interval = setInterval(() => {
       if (!stopGame) {
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = '#94CA94';
         ctx.fillRect(0, 0, canvasSize, canvasSize); // Efface le canvas en le remplissant de blanc
         ctx.strokeRect(0, 0, canvasSize, canvasSize); // Trace un contour autour du canvas
+        
 
         faireAvancerSerpent(); // Déplace le serpent d'une étape
         drawSnake(ctx, snake); // Dessine le serpent sur le canvas
@@ -145,10 +146,16 @@ const GameBoard: React.FC<GameBoardProps> = ({
 
   // Retourne l'élément canvas où le jeu est rendu
   return (
-    <div className="flex justify-center items-center ">
-      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} className="" ></canvas>
+    <div className="flex justify-center items-center">
+      <canvas
+        ref={canvasRef}
+        width={canvasSize}
+        height={canvasSize}
+        className="bg-[#94CA94] border-4 border-black"
+      ></canvas>
     </div>
   );
+  
 };
 
 export default GameBoard;
