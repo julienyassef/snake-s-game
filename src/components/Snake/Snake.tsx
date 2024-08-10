@@ -11,11 +11,11 @@ export const drawSnake = (ctx: CanvasRenderingContext2D, snake: SnakePart[]) => 
   
     // Définir la couleur de remplissage pour chaque partie du serpent.
     // Ici, la couleur est un vert vif (#00fe14).
-    ctx.fillStyle = '#00fe14';
+    ctx.fillStyle = 'black';
   
     // Définir la couleur du contour pour chaque partie du serpent.
     // Ici, la couleur est noire.
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = '#94CA94';
   
     // Pour chaque partie du serpent dans le tableau 'snake', dessiner un carré sur le canvas.
     snake.forEach((part) => {
