@@ -21,7 +21,7 @@ interface GameBoardProps {
   onSnakeMove: (newSnake: SnakePart[]) => void; // Fonction callback pour mettre à jour le serpent
   onAppleEaten: () => void; // Fonction callback déclenchée quand la pomme est mangée
   onDirectionChange: (vx: number, vy: number) => void; // Fonction callback pour changer la direction du serpent
-  speed: number;
+  speed: number; // Vitesse sélectionnée par l'utilisateur
 }
 
 // Composant GameBoard : gère le canvas où le jeu Snake est rendu
@@ -36,6 +36,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   onSnakeMove,
   onAppleEaten,
   onDirectionChange,
+  speed,
 }) => {
   // Référence pour accéder au canvas HTML
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -58,7 +59,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       // Retourne true si une des conditions de fin est remplie
       return mordu || toucheMurGauche || toucheMurDroite || toucheMurTop || toucheMurBottom;
     },
-    [snake, canvasSize] // Dépendances : ces valeurs sont utilisées dans la fonction
+    [snake] // Dépendances : ces valeurs sont utilisées dans la fonction
   );
 
   // Fonction pour déplacer le serpent d'une étape
@@ -133,11 +134,11 @@ const GameBoard: React.FC<GameBoardProps> = ({
         drawSnake(ctx, snake); // Dessine le serpent sur le canvas
         drawApple(ctx, pommeX, pommeY); // Dessine la pomme sur le canvas
       }
-    }, 100);
+    }, speed);
 
     // Nettoie l'intervalle lorsqu'il n'est plus nécessaire (nettoyage de l'effet)
     return () => clearInterval(interval);
-  }, [stopGame, snake, pommeX, pommeY, vx, vy, faireAvancerSerpent]); // Dépendances
+  }, [stopGame, snake, pommeX, pommeY, vx, vy, faireAvancerSerpent, speed]); // Dépendances
 
   // Effet pour écouter les événements clavier pour le changement de direction
   useEffect(() => {
