@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import GameBoard from './components/GameBoard/GameBoard';
 import Score from './components/Score/Score';
 import StartButton from './components/StartButton/StartButton';
 import LevelSelector from './components/LevelSelector/LevelSelector';
 import AnimatedSnake from './components/AnimatedSnake/AnimatedSnake';
+import ModalGameOver from './components/ModalGameOver/ModalGameOver'; // Import du nouveau composant
 
 interface SnakePart {
   x: number;
@@ -11,8 +12,6 @@ interface SnakePart {
 }
 
 const App: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
   const [snake, setSnake] = useState<SnakePart[]>([
     { x: 140, y: 150 },
     { x: 130, y: 150 },
@@ -26,30 +25,56 @@ const App: React.FC = () => {
   const [score, setScore] = useState(0);
   const [stopGame, setStopGame] = useState(true);
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [showModal, setShowModal] = useState(false); // État pour contrôler l'affichage du modal
   const [speed, setSpeed] = useState(100); // Vitesse par défaut
-  const [animateSnakes, setAnimateSnakes] = useState(true);
+  const [animateSnakes, setAnimateSnakes] = useState(true); // Pour contrôler l'animation des serpents
 
-
-  // Fonction pour démarrer le jeu
   const startGame = () => {
-    setIsGameStarted(true);
+    // Taille du canvas
+    const canvasSize = 300; // Ajustez en fonction de la taille réelle de votre canvas
+  
+    // Calculer la position initiale pour que le serpent soit centré
+    const initialX = canvasSize / 2;
+    const initialY = canvasSize / 2;
+  
+    // Réinitialiser le serpent avec la position centrale
+    setSnake([
+      { x: initialX, y: initialY },
+      { x: initialX - 10, y: initialY },
+      { x: initialX - 20, y: initialY },
+      { x: initialX - 30, y: initialY },
+    ]);
+  
+    // Réinitialiser la direction (à droite par défaut)
+    setVx(10);
+    setVy(0);
+  
+    // Réinitialiser la pomme à une nouvelle position aléatoire
+    creerPomme();
+  
+    // Réinitialiser le score
+    setScore(0);
+  
+    // Relancer le jeu
     setStopGame(false);
     setAnimateSnakes(false);
+    setShowModal(false);  // Fermer le modal si le jeu redémarre
+    setIsGameStarted(true);
   };
+  
+  
 
-  // Fonction pour sélectionner le niveau et définir la vitesse correspondante
   const selectLevel = (level: number) => {
     if (level === 1) setSpeed(150); // Lent
     if (level === 2) setSpeed(100); // Moyen 
     if (level === 3) setSpeed(50); // Rapide
+    setShowModal(false);  // Fermer le modal lorsque le niveau est changé
   };
 
-  // Fonction pour générer une position aléatoire pour la pomme
   const randomPosition = () => {
     return Math.floor(Math.random() * 29) * 10;
   };
 
-  // Fonction pour créer une nouvelle pomme à une position aléatoire
   const creerPomme = useCallback(() => {
     const newPommeX = randomPosition();
     const newPommeY = randomPosition();
@@ -58,32 +83,35 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    creerPomme(); // Génère une position aléatoire pour la première pomme au démarrage du jeu
+    creerPomme();
   }, [creerPomme]);
 
-  // Fonction appelée en cas de fin de jeu
   const handleGameOver = () => {
     setStopGame(true);
+    setShowModal(true);  // Afficher le modal à la fin du jeu
   };
 
-  // Fonction pour mettre à jour la position du serpent
   const handleSnakeMove = (newSnake: SnakePart[]) => {
     setSnake(newSnake);
   };
 
-  // Fonction appelée lorsque la pomme est mangée par le serpent
-  const handleAppleEaten = () => {
-    setScore(score + 10);
-    creerPomme(); // Génère une nouvelle position aléatoire pour la pomme après l'avoir mangée
+  const goToLevelSelection = () => {
+    setIsGameStarted(false); // Retour au menu de sélection du niveau
+    setStopGame(true);
+    setAnimateSnakes(true);  // Redémarrer les animations des serpents
+    setShowModal(false);
   };
 
-  // Fonction pour changer la direction du serpent
+  const handleAppleEaten = () => {
+    setScore(score + 10);
+    creerPomme();
+  };
+
   const handleDirectionChange = useCallback((newVx: number, newVy: number) => {
     setVx(newVx);
     setVy(newVy);
   }, []);
 
-  // Générer des longueurs aléatoires pour chaque serpent
   const length1 = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
   const length2 = Math.floor(Math.random() * (12 - 6 + 1)) + 6;
   const length3 = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
@@ -95,7 +123,6 @@ const App: React.FC = () => {
         <AnimatedSnake initialLength={length2} animate={animateSnakes} />
         <AnimatedSnake initialLength={length3} animate={animateSnakes} />
       </div>
-
       
       <h1 className="text-4xl font-bold mb-6 z-10">Snake Game</h1>
       {!isGameStarted ? (
@@ -116,17 +143,19 @@ const App: React.FC = () => {
             onSnakeMove={handleSnakeMove}
             onAppleEaten={handleAppleEaten}
             onDirectionChange={handleDirectionChange}
-            speed={speed} // Vitesse choisie passée au GameBoard
+            speed={speed}
           />
           <Score score={score} />
         </>
       )}
-      <canvas
-        ref={canvasRef}
-        width={window.innerWidth}
-        height={window.innerHeight}
-        className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none" // z-0 place le canvas derrière tout, pointer-events-none désactive les interactions
-      ></canvas>
+
+      {showModal && (
+        <ModalGameOver
+          score={score}
+          onRestart={startGame}
+          onChangeLevel={goToLevelSelection}
+        />
+      )}
     </div>
   );
 };
