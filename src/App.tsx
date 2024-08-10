@@ -169,7 +169,7 @@ const App: React.FC = () => {
         </div>
       ) : (
         <>
-          <Score score={score} />
+          <PlayerName playerName={playerName} />
           <GameBoard
             snake={snake}
             pommeX={pommeX}
@@ -184,7 +184,7 @@ const App: React.FC = () => {
             speed={speed}
           />
           <div className="flex items-center justify-between w-[300px] px-4">
-            <PlayerName playerName={playerName} />
+            <Score score={score} />
             <ModeDisplay mode={mode}/>
           </div>
         </>

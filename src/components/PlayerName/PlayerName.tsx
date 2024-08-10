@@ -6,8 +6,8 @@ interface PlayerNameProps {
 
 const PlayerName: React.FC<PlayerNameProps> = ({ playerName }) => {
   return (
-    <div className="mt-4">
-      <span className="text-xl font-semibold">Joueur: {playerName}</span>
+    <div className="mt-2 mb-4">
+      <span className=" text-xl font-semibold">Joueur: {playerName}</span>
     </div>
   );
 };
