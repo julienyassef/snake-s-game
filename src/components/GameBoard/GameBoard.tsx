@@ -21,6 +21,7 @@ interface GameBoardProps {
   onSnakeMove: (newSnake: SnakePart[]) => void; // Fonction callback pour mettre à jour le serpent
   onAppleEaten: () => void; // Fonction callback déclenchée quand la pomme est mangée
   onDirectionChange: (vx: number, vy: number) => void; // Fonction callback pour changer la direction du serpent
+  speed: number;
 }
 
 // Composant GameBoard : gère le canvas où le jeu Snake est rendu
