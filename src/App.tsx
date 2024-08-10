@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import GameBoard from './components/GameBoard/GameBoard';
 import Score from './components/Score/Score';
+import StartButton from './components/StartButton';
+
 interface SnakePart {
   x: number;
   y: number;
@@ -18,7 +20,13 @@ const App: React.FC = () => {
   const [pommeX, setPommeX] = useState(0);
   const [pommeY, setPommeY] = useState(0);
   const [score, setScore] = useState(0);
-  const [stopGame, setStopGame] = useState(false);
+  const [stopGame, setStopGame] = useState(true);
+  const [isGameStarted, setIsGameStarted] = useState(false); 
+
+  const startGame = () => {
+    setIsGameStarted(true);
+    setStopGame(false);
+  };
 
   // Fonction pour générer une position aléatoire
   const randomPosition = () => {
@@ -39,8 +47,8 @@ const App: React.FC = () => {
 
   const handleGameOver = () => {
     setStopGame(true);
-    alert('Game Over! Appuyez sur "OK" pour recommencer.');
-    window.location.reload();
+    // alert('Game Over! Appuyez sur "OK" pour recommencer.');
+    // window.location.reload();
   };
 
   const handleSnakeMove = (newSnake: SnakePart[]) => {
@@ -60,19 +68,25 @@ const App: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <h1 className="text-4xl font-bold mb-6">Snake Game</h1>
-      <GameBoard
-        snake={snake}
-        pommeX={pommeX}
-        pommeY={pommeY}
-        vx={vx}
-        vy={vy}
-        stopGame={stopGame}
-        onGameOver={handleGameOver}
-        onSnakeMove={handleSnakeMove}
-        onAppleEaten={handleAppleEaten}
-        onDirectionChange={handleDirectionChange}
-      />
-      <Score score={score} />
+      {!isGameStarted ? (
+        <StartButton onStart={startGame} />
+      ) : (
+        <>
+          <GameBoard
+            snake={snake}
+            pommeX={pommeX}
+            pommeY={pommeY}
+            vx={vx}
+            vy={vy}
+            stopGame={stopGame}
+            onGameOver={handleGameOver}
+            onSnakeMove={handleSnakeMove}
+            onAppleEaten={handleAppleEaten}
+            onDirectionChange={handleDirectionChange}
+          />
+          <Score score={score} />
+        </>
+      )}
     </div>
   );
 };

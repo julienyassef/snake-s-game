@@ -141,10 +141,14 @@ const GameBoard: React.FC<GameBoardProps> = ({
   useEffect(() => {
     window.addEventListener('keydown', changerDirection); // Ajoute l'écouteur d'événements
     return () => window.removeEventListener('keydown', changerDirection); // Retire l'écouteur lors du démontage
-  }, [changerDirection]); // Dépendances
+  }, [changerDirection]); 
 
   // Retourne l'élément canvas où le jeu est rendu
-  return <canvas ref={canvasRef} width={canvasSize} height={canvasSize} className="border-4 border-black"></canvas>;
+  return (
+    <div className="flex justify-center items-center ">
+      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} className="" ></canvas>
+    </div>
+  );
 };
 
 export default GameBoard;
