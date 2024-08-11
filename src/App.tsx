@@ -11,6 +11,7 @@ import ScoreBoard from './components/ScoreBoard/ScoreBoard';
 import NameValidationModal from './components/NameValidationModal/NameValidationModal'; 
 import ModeDisplay from './components/ModeDisplay/ModeDisplay';
 
+
 interface SnakePart {
   x: number;
   y: number;
@@ -215,6 +216,14 @@ const App: React.FC = () => {
           onChangeLevel={goToLevelSelection}
         />
       )}
+
+      <a href="https://julienyassef.fr/" target="_blank" rel="noopener noreferrer">
+        <img
+          src="/Logo.png"
+          alt="Logo Julien Yassef"
+          className="absolute bottom-4 right-4 h-12 w-12 opacity-80 hover:opacity-100 transition-opacity"
+        />
+      </a>
     </div>
   );
 };
