@@ -140,7 +140,7 @@ const App: React.FC = () => {
   const length3 = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
 
   return (
-    <div className="relative flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="relative flex flex-col items-center justify-center h-screen bg-white">
       <div className="absolute inset-0 z-0">
         <AnimatedSnake initialLength={length1} animate={animateSnakes} />
         <AnimatedSnake initialLength={length2} animate={animateSnakes} />
