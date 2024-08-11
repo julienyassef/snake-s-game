@@ -1,3 +1,9 @@
+/**
+ * Dessine une pomme en utilisant un motif de "pixels".
+ * @param {CanvasRenderingContext2D} ctx - Le contexte de rendu 2D du canvas sur lequel dessiner.
+ * @param {number} x - La position X (en pixels) où commencer à dessiner la pomme.
+ * @param {number} y - La position Y (en pixels) où commencer à dessiner la pomme.
+ */
 export const drawApple = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
     // Définir la couleur de la pomme (noir pour imiter l'écran du Nokia 3310).
     ctx.fillStyle = 'black';
