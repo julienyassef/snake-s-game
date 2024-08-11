@@ -10,6 +10,7 @@ import ModalGameOver from './components/ModalGameOver/ModalGameOver';
 import ScoreBoard from './components/ScoreBoard/ScoreBoard';
 import NameValidationModal from './components/NameValidationModal/NameValidationModal'; 
 import ModeDisplay from './components/ModeDisplay/ModeDisplay';
+import LogoJY from './components/Logo/LogoJy';
 
 
 interface SnakePart {
@@ -217,13 +218,14 @@ const App: React.FC = () => {
         />
       )}
 
-      <a href="https://julienyassef.fr/" target="_blank" rel="noopener noreferrer">
-        <img
-          src="/Logo.png"
-          alt="Logo Julien Yassef"
-          className="absolute bottom-4 right-4 h-12 w-12 opacity-80 hover:opacity-100 transition-opacity"
-        />
-      </a>
+    <a
+      href="https://julienyassef.fr/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="absolute bottom-6 right-6"
+    >
+      <LogoJY />
+    </a>
     </div>
   );
 };
