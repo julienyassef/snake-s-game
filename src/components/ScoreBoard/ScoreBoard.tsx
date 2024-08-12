@@ -16,14 +16,13 @@ const ScoreBoard: React.FC = () => {
     if (index === 1) return 'bg-[#C0C0C0]';  
     if (index === 2) return 'bg-[#B87333]';  
     return 'bg-gray-200';                   
-};
-
+  };
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-lg max-w-4xl mx-auto">
+    <div className="p-8 bg-white rounded-lg shadow-lg max-w-4xl mx-auto h-full">
       <h2 className="text-3xl font-bold mb-6 text-[#95C695] text-center">Classement</h2>
-      
-      <div className="grid grid-cols-3 gap-6">
+
+      <div className="overflow-y-auto max-h-full grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-3">
         {['lent', 'moyen', 'rapide'].map((mode) => (
           <div key={mode}>
             <h3 className="text-2xl font-semibold text-gray-900 capitalize mb-4 text-center">{mode}</h3>

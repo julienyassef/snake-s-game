@@ -232,17 +232,18 @@ const App: React.FC = () => {
       )}
 
       {showScoreBoard && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 z-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded shadow-lg text-center">
-            <ScoreBoard />
-            <button
-              className="mt-4 bg-[#95C695] text-white font-bold py-2 px-4 rounded"
-              onClick={() => setShowScoreBoard(false)}
-            >
-              Fermer
-            </button>
-          </div>
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 z-50 flex items-center justify-center overflow-y-auto">
+        <div className="bg-white p-8 rounded shadow-lg text-center max-h-screen overflow-y-auto">
+          <ScoreBoard />
+          <button
+            className="mt-4 bg-[#95C695] text-white font-bold py-2 px-4 rounded"
+            onClick={() => setShowScoreBoard(false)}
+          >
+            Fermer
+          </button>
         </div>
+      </div>
+      
       )}
 
       {showModal && (
