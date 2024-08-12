@@ -11,6 +11,7 @@ import ScoreBoard from './components/ScoreBoard/ScoreBoard';
 import NameValidationModal from './components/NameValidationModal/NameValidationModal'; 
 import ModeDisplay from './components/ModeDisplay/ModeDisplay';
 import LogoJY from './components/Logo/LogoJy';
+import MobileControls from './components/MobileControl/MobileControl';
 
 
 interface SnakePart {
@@ -41,6 +42,7 @@ const App: React.FC = () => {
   const [showScoreBoard, setShowScoreBoard] = useState(false); // État pour afficher le tableau des scores
   const [speed, setSpeed] = useState(150); // Vitesse par défaut
   const [animateSnakes, setAnimateSnakes] = useState(true); // Pour contrôler l'animation des serpents
+  const isMobile = window.innerWidth <= 768;
 
   const startGame = () => {
     if (playerName.trim().length < 3 || playerName.trim().length > 12) {
@@ -140,6 +142,7 @@ const App: React.FC = () => {
   const length2 = Math.floor(Math.random() * (12 - 6 + 1)) + 6;
   const length3 = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
 
+
   return (
     <div className="relative flex flex-col items-center justify-center h-screen bg-white">
       <div className="absolute inset-0 z-0">
@@ -155,11 +158,11 @@ const App: React.FC = () => {
         Voir le Classement
       </button>
 
-
       <h1 className="text-4xl font-bold mb-6 z-10">Snake Game</h1>
+
       {!isGameStarted ? (
         <div className="flex flex-col items-center z-10">
-           <input
+          <input
             type="text"
             placeholder="Entrez votre nom"
             value={playerName}
@@ -172,23 +175,55 @@ const App: React.FC = () => {
       ) : (
         <>
           <PlayerName playerName={playerName} />
-          <GameBoard
-            snake={snake}
-            pommeX={pommeX}
-            pommeY={pommeY}
-            vx={vx}
-            vy={vy}
-            stopGame={stopGame}
-            onGameOver={handleGameOver}
-            onSnakeMove={handleSnakeMove}
-            onAppleEaten={handleAppleEaten}
-            onDirectionChange={handleDirectionChange}
-            speed={speed}
-          />
-          <div className="flex items-center justify-between w-[300px] px-4">
-            <Score score={score} />
-            <ModeDisplay mode={mode}/>
-          </div>
+          
+          {isMobile ? (
+            <div className="flex flex-col items-center w-full px-4">
+              <GameBoard
+                snake={snake}
+                pommeX={pommeX}
+                pommeY={pommeY}
+                vx={vx}
+                vy={vy}
+                stopGame={stopGame}
+                onGameOver={handleGameOver}
+                onSnakeMove={handleSnakeMove}
+                onAppleEaten={handleAppleEaten}
+                onDirectionChange={handleDirectionChange}
+                speed={speed}
+              />
+              <div className="flex items-center justify-between w-[300px] px-4">
+                <Score score={score} />
+                <ModeDisplay mode={mode} />
+              </div>
+              <div className="mt-14 w-full flex justify-center">
+                <MobileControls
+                  vx={vx}
+                  vy={vy}
+                  onDirectionChange={handleDirectionChange}
+                />
+              </div>
+            </div>
+          ) : (
+            <>
+              <GameBoard
+                snake={snake}
+                pommeX={pommeX}
+                pommeY={pommeY}
+                vx={vx}
+                vy={vy}
+                stopGame={stopGame}
+                onGameOver={handleGameOver}
+                onSnakeMove={handleSnakeMove}
+                onAppleEaten={handleAppleEaten}
+                onDirectionChange={handleDirectionChange}
+                speed={speed}
+              />
+              <div className="flex items-center justify-between w-[300px] px-4">
+                <Score score={score} />
+                <ModeDisplay mode={mode} />
+              </div>
+            </>
+          )}
         </>
       )}
 
@@ -218,16 +253,17 @@ const App: React.FC = () => {
         />
       )}
 
-    <a
-      href="https://julienyassef.fr/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="absolute bottom-6 right-6"
-    >
-      <LogoJY />
-    </a>
+      <a
+        href="https://julienyassef.fr/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute bottom-6 right-6"
+      >
+        <LogoJY />
+      </a>
     </div>
   );
+
 };
 
 export default App;
